@@ -34,8 +34,9 @@ def startSession():
 
 def scrape_ean(ean):
     try:
-        #searchesthe eans
-        driver.get(f'{"https://de.camelcamelcamel.com/search?sq="}{ean}')
+        #searches the eans
+        URL = "https://de.camelcamelcamel.com/search?sq="
+        driver.get(f'{URL}{ean}')
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,\
             '//*[@id="content"]/div[2]/div[3]/div[1]/div/p/span')))
         #goes into xpath with price and returns text value
@@ -46,7 +47,7 @@ def scrape_ean(ean):
 def iterate(pandas_df):
     startSession()
     for i in range(len(pandas_df)):
-        pandas_df.loc[i,"Amazon-Preis"] = (scrape_ean(str(pandas_df.loc[i,"EAN-Code"])))[:-1]
-        print(pandas_df.loc[i,"Amazon-Preis"])
+        pandas_df.loc[i,"Amazon-Price"] = (scrape_ean(str(pandas_df.loc[i,"EAN-Code"])))[:-1]
+        print(pandas_df.loc[i,"Amazon-Price"])
         time.sleep(4)
     driver.quit()
